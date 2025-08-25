@@ -47,10 +47,9 @@ export async function createOrder(req, res) {
 /**
  * GET /orders/:id
  */
-export async function getOrderById(req, res) {
-  const order = ORDERS.get(req.params.id);
-  if (!order) return res.status(404).json({ error: "Not Found" });
-  return res.json(order);
+export async function getAllOrders(req, res) {
+  const orders = [...ORDERS.values()];
+  return res.json(orders);
 }
 
 /**
