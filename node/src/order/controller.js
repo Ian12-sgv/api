@@ -2,16 +2,17 @@
 // Controlador de /orders (en memoria) — ESM
 // Asegúrate de tener "type": "module" en package.json
 
-const ORDERS = new Map(); // id -> order
+//creacion de ordenes post
+const ORDERS = new Map(); // almacén en memoria
 
-const nowISO = () => new Date().toISOString();
+const nowISO = () => new Date().toISOString(); // fecha actual en ISO 8601
 const newId =
-  () => "o_" + (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2, 10));
+  () => "o_" + (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2, 10));// id aleatorio
 
-const ALLOWED = new Set(["created", "paid", "canceled"]);
+const ALLOWED = new Set(["created", "paid", "canceled"]);// estados válidos
 
-// --- ETags ---
-// Recurso: ETag débil basado en versión del documento
+// --- ETags --- get 
+// Recurso: ETag basado en versión del documento si se agrego una vueva o si se elimino o si se modifico
 const etagOf = (o) => `W/"${o.version ?? 1}"`;
 // Colección: cambia si cambia cualquier orden (usa máx versión + cantidad)
 const etagOfCollection = () => {
